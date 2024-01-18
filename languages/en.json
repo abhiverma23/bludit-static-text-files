@@ -1,0 +1,7 @@
+{
+	"plugin-data":
+	{
+		"name": "Static Text Files",
+		"description": "Show static file content at the provided route you desire. Nothing fancy!"
+	}
+}
