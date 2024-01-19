@@ -6,8 +6,8 @@ class pluginStaticTextFile extends Plugin {
 	{
 	    // JSON database
 		$jsondb = json_encode(array(
-			'Ads.txt'=>'google.com, pub-0000000000000000, DIRECT, x0x0x0x0x0x0x0x0',
-			'ads.txt'=>'google.com, pub-0000000000000000, DIRECT, x0x0x0x0x0x0x0x0'
+			'/Ads.txt'=>'google.com, pub-0000000000000000, DIRECT, x0x0x0x0x0x0x0x0',
+			'/ads.txt'=>'google.com, pub-0000000000000000, DIRECT, x0x0x0x0x0x0x0x0'
 		));
 
 		// Fields and default values for the database of this plugin
@@ -81,7 +81,7 @@ class pluginStaticTextFile extends Plugin {
 
 		$html .= '<div>';
 		$html .= '<label>'.$L->get('Text file path').'</label>';
-		$html .= '<input name="fileName" type="text" class="form-control" placeholder="Ads.txt">';
+		$html .= '<input name="fileName" type="text" class="form-control" placeholder="/ads.txt">';
 		$html .= '</div>';
 
 		$html .= '<div>';
@@ -117,18 +117,15 @@ class pluginStaticTextFile extends Plugin {
     //Show content on domain
 	public function beforeAll()
 	{
+	    $global $url;
 	    $jsondb = $this->getValue('jsondb', $unsanitized=false);
 		$files = json_decode($jsondb, true);
-		
-		foreach($files as $webhook=>$content) {
-            //Compare the route and display the file is matches file path
-		    if ($this->webhook($webhook)) {
-    			header('Content-type: text/plain');
-    			echo $content;
-    			exit(0);
-    		}
+		$content=$files[$url->uri()];
+		if(!is_null($content)) {
+		    header('Content-type: text/plain');
+			echo $content;
+			exit(0);
 		}
-		
 	}
 
 }
